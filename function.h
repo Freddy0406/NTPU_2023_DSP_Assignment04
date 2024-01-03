@@ -19,7 +19,7 @@
 
 float hamming(int N, int n);
 float low_pass(int m, int n);
-void through_LPF(float *data, int data_length, float *h, int h_length, float *output);
+void through_LPF(float *data, int data_length, float *h, int h_length, short *output);
 
 
 

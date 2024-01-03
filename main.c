@@ -13,8 +13,8 @@ int main(int argc, char **argv){
     float *data_zp_L = (float*)calloc((data_L+zp_N),sizeof(float));                 //zero padding 左聲道
     float *data_zp_R = (float*)calloc((data_L+zp_N),sizeof(float));                 //zero padding 右聲道
 
-    float *output_L = (float*)calloc((data_L+zp_N),sizeof(float));                 //zero padding 左聲道
-    float *output_R = (float*)calloc((data_L+zp_N),sizeof(float));                 //zero padding 左聲道
+    short *output_L = (short*)calloc((data_L+zp_N+P-1),sizeof(short));                 //zero padding 左聲道
+    short *output_R = (short*)calloc((data_L+zp_N+P-1),sizeof(short));                 //zero padding 左聲道
 
 
 
@@ -28,7 +28,7 @@ int main(int argc, char **argv){
         h[n] = low_pass(MOrder, n);
     }
 
-
+    int times = 0;
 
 while( fread(data_read, sizeof(short), data_L, fp) ) {
         // convert data type
@@ -43,23 +43,24 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
         through_LPF(data_zp_R, (data_L+zp_N) , h, P, output_R);
 
 
-        // overlap and add
-        // for(i=0;i<(L+P-1);i++) {
-        //     y[m*L+i] = y[m*L+i] + y_m_zero_padded[i];            
-        // }
+        // // overlap and add
+        // // for(i=0;i<(L+P-1);i++) {
+        // //     y[m*L+i] = y[m*L+i] + y_m_zero_padded[i];            
+        // // }
 
-        // // output waveform for the m-th window
-        // for(i=0;i<L;i++) {
-        //     s_y_m[i] = (short)roundf(y[m*L+i]);
-        // }
+        // // // output waveform for the m-th window
+        // // for(i=0;i<L;i++) {
+        // //     s_y_m[i] = (short)roundf(y[m*L+i]);
+        // // }
 
         
-        for(i=0;i<data_L;i++) {
-            fwrite(data_zp_L+i, sizeof(short), 1, fp_out);
-            fwrite(data_zp_R+i, sizeof(short), 1, fp_out);
+        for(i=0;i<(data_L+zp_N);i++) {
+            fwrite(output_L+i, sizeof(short), 1, fp_out);
+            fwrite(output_R+i, sizeof(short), 1, fp_out);
         }
-        printf("Success!\n");
-        // m++;
+        // // m++;
+
+        times++;
     }
 
 
@@ -79,6 +80,8 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
     free(data_read_R);
     free(data_zp_L);
     free(data_zp_R);
+    free(output_L);
+    free(output_R);
     free(h);
     fclose(fp);
     fclose(fp_out);
