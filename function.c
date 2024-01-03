@@ -32,7 +32,7 @@ void through_LPF(float *data, int data_length, float *h, int h_length, float *ou
 			if( (n-k)>=0 )
 		 		y = y + h[k] * data[n-k];
 		}
-		output[n] = y;					
+		output[n] = L*y;					
 	}
 	// printf("Success!\n");
 }

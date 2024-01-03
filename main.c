@@ -40,6 +40,7 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
 
 
         through_LPF(data_zp_L, (data_L+zp_N) , h, P, output_L);
+        through_LPF(data_zp_R, (data_L+zp_N) , h, P, output_R);
 
 
         // overlap and add
@@ -53,10 +54,11 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
         // }
 
         
-        // for(i=0;i<data_L;i++) {
-        //     fwrite(data_read+i, sizeof(short), 1, fp_out);
-        // }
-        
+        for(i=0;i<data_L;i++) {
+            fwrite(data_zp_L+i, sizeof(short), 1, fp_out);
+            fwrite(data_zp_R+i, sizeof(short), 1, fp_out);
+        }
+        printf("Success!\n");
         // m++;
     }
 
