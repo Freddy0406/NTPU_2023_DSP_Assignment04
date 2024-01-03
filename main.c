@@ -10,8 +10,8 @@ int main(int argc, char **argv){
     short *data_read = (short*)malloc(sizeof(short)*(data_L));                      //讀取wav雙聲道        
     short *data_read_L = (short*)malloc(sizeof(short)*(data_L/2));                  //存取wav左聲道
     short *data_read_R = (short*)malloc(sizeof(short)*(data_L/2));                  //存取wav右聲道
-    float *data_zp_L = (float*)calloc((data_L+zp_N),sizeof(float));                 //zero padding 左聲道
-    float *data_zp_R = (float*)calloc((data_L+zp_N),sizeof(float));                 //zero padding 右聲道
+    float *data_zp_L = (float*)calloc((zp_N),sizeof(float));                 //zero padding 左聲道
+    float *data_zp_R = (float*)calloc((zp_N),sizeof(float));                 //zero padding 右聲道
 
     short *output_L = (short*)calloc((data_L+zp_N+P-1),sizeof(short));                 //zero padding 左聲道
     short *output_R = (short*)calloc((data_L+zp_N+P-1),sizeof(short));                 //zero padding 左聲道
@@ -39,8 +39,8 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
         }
 
 
-        through_LPF(data_zp_L, (data_L+zp_N) , h, P, output_L);
-        through_LPF(data_zp_R, (data_L+zp_N) , h, P, output_R);
+        // through_LPF(data_zp_L, (data_L+zp_N) , h, P, output_L);
+        // through_LPF(data_zp_R, (data_L+zp_N) , h, P, output_R);
 
 
         // // overlap and add
@@ -54,10 +54,10 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
         // // }
 
         
-        for(i=0;i<(data_L+zp_N);i++) {
-            fwrite(output_L+i, sizeof(short), 1, fp_out);
-            fwrite(output_R+i, sizeof(short), 1, fp_out);
-        }
+        // for(i=0;i<(data_L+zp_N);i++) {
+        //     fwrite(output_L+i, sizeof(short), 1, fp_out);
+        //     fwrite(output_R+i, sizeof(short), 1, fp_out);
+        // }
         // // m++;
 
         times++;
