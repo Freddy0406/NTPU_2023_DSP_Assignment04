@@ -7,9 +7,9 @@
 
 #define PI 3.141592653589793f
 #define data_L 441*2                // 20ms frame size 44100*0.01 = 441 (Stereo = 441 X 2 = 882)
-#define FL 22050.0f                 // cutoff frequency = 22050 Hz
+#define FL 50.0f                 // cutoff frequency = 22050 Hz
 #define FS 44100.0f                 // sampling frequency
-#define MOrder 512                  // LPF Order
+#define MOrder 128                  // LPF Order
 #define M 441                                              
 #define L 80
 #define P (2*MOrder+1)
@@ -19,7 +19,7 @@
 
 float hamming(int N, int n);
 float low_pass(int m, int n);
-void through_LPF(float *data, int data_length, float *h, int h_length, short *output);
+void through_LPF(float *data, int data_length, float *h, short *output);
 
 
 

@@ -8,13 +8,11 @@ int main(int argc, char **argv){
     FILE *fp_out = fopen("output.raw", "wb");
     fseek(fp, 44, SEEK_SET);                                                        //跳過wav標頭
     short *data_read = (short*)malloc(sizeof(short)*(data_L));                      //讀取wav雙聲道        
-    short *data_read_L = (short*)malloc(sizeof(short)*(data_L/2));                  //存取wav左聲道
-    short *data_read_R = (short*)malloc(sizeof(short)*(data_L/2));                  //存取wav右聲道
     float *data_zp_L = (float*)calloc((zp_N),sizeof(float));                 //zero padding 左聲道
     float *data_zp_R = (float*)calloc((zp_N),sizeof(float));                 //zero padding 右聲道
 
-    short *output_L = (short*)calloc((data_L+zp_N+P-1),sizeof(short));                 //zero padding 左聲道
-    short *output_R = (short*)calloc((data_L+zp_N+P-1),sizeof(short));                 //zero padding 左聲道
+    short *output_L = (short*)calloc((zp_N+P-1),sizeof(short));                 //zero padding 左聲道
+    short *output_R = (short*)calloc((zp_N+P-1),sizeof(short));                 //zero padding 左聲道
 
 
 
@@ -29,18 +27,30 @@ int main(int argc, char **argv){
     }
 
     int times = 0;
+    printf("%d\n",zp_N+P-1);
 
 while( fread(data_read, sizeof(short), data_L, fp) ) {
         // convert data type
-        for(i=0;i<(data_L-1);i+=2) {
 
-            data_zp_L[i*L] = (float) data_read[i];
-            data_zp_R[i*L] = (float) data_read[i+1];
+
+        for(i=0;i<(data_L-1);i+=2) {
+            data_zp_L[(i*L)/2] = (float) data_read[i];
+            data_zp_R[(i*L)/2] = (float) data_read[i+1];
         }
 
+        // if(times==0){
+        //     for(i = 0;i<zp_N;i++){
+        //         if(data_zp_R[i]!=0){
+        //             printf("%d\n",i);
+        //         }
+        //     }
+        // }
 
-        // through_LPF(data_zp_L, (data_L+zp_N) , h, P, output_L);
-        // through_LPF(data_zp_R, (data_L+zp_N) , h, P, output_R);
+
+
+
+        through_LPF(data_zp_L, zp_N , h,  output_L);
+        through_LPF(data_zp_R, zp_N , h,  output_R);
 
 
         // // overlap and add
@@ -53,13 +63,17 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
         // //     s_y_m[i] = (short)roundf(y[m*L+i]);
         // // }
 
-        
-        // for(i=0;i<(data_L+zp_N);i++) {
-        //     fwrite(output_L+i, sizeof(short), 1, fp_out);
-        //     fwrite(output_R+i, sizeof(short), 1, fp_out);
+        // for(i = 0;i<zp_N;i++){
+        //     output_L[i] = (short)(data_zp_L[i]);
+        //     output_R[i] = (short)(data_zp_R[i]);
         // }
-        // // m++;
 
+        
+        for(i=0;i<(zp_N+P-1);i++) {
+            fwrite(output_L+i, sizeof(short), 1, fp_out);
+            fwrite(output_R+i, sizeof(short), 1, fp_out);
+        }
+        // // m++;
         times++;
     }
 
@@ -76,8 +90,6 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
 
 
     free(data_read);
-    free(data_read_L);
-    free(data_read_R);
     free(data_zp_L);
     free(data_zp_R);
     free(output_L);

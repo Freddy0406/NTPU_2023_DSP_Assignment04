@@ -21,19 +21,18 @@ float low_pass(int m, int n)
 
 
 
-void through_LPF(float *data, int data_length, float *h, int h_length, short *output){
+void through_LPF(float *data, int N, float *h, short *output){
 
     int n = 0;
     int k = 0;
     float y = 0.0;
-    for(n=0;n<(data_length+h_length-1);n++) {
+    for(n=0;n<(N+P-1);n++) {
 		y = 0.0;
-		for(k=0;k<h_length;k++) {
-			if( (n-k)>=0 && (n-k<data_length) )
+		for(k=0;k<P;k++) {
+			if( (n-k)>=0 && (n-k<N) )
 		 		y = y + h[k] * data[n-k];
 		}
 		output[n] = (short)(roundf(L*y));			
 		// output[n] = (short)(roundf(data[n]));
 	}
-	
 }
