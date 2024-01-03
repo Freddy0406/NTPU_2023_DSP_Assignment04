@@ -13,12 +13,13 @@
 #define M 441                        
 #define L 80
 #define P (2*MOrder+1)
-#define zp_N 79*(data_L/2)
+#define zp_N M*(data_L/2)
 
 
 
 float hamming(int N, int n);
 float low_pass(int m, int n);
+void through_LPF(float *data, int data_length, float *h, int h_length, float *output);
 
 
 

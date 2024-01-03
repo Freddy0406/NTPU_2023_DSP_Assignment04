@@ -13,6 +13,10 @@ int main(int argc, char **argv){
     float *data_zp_L = (float*)calloc((data_L+zp_N),sizeof(float));                 //zero padding 左聲道
     float *data_zp_R = (float*)calloc((data_L+zp_N),sizeof(float));                 //zero padding 右聲道
 
+    float *output_L = (float*)calloc((data_L+zp_N),sizeof(float));                 //zero padding 左聲道
+    float *output_R = (float*)calloc((data_L+zp_N),sizeof(float));                 //zero padding 左聲道
+
+
 
     int n,i;
     int m = 0;  
@@ -27,16 +31,15 @@ int main(int argc, char **argv){
 
 
 while( fread(data_read, sizeof(short), data_L, fp) ) {
-        // convolution y_m = x_m * h
         // convert data type
         for(i=0;i<(data_L-1);i+=2) {
+
             data_zp_L[i*L] = (float) data_read[i];
             data_zp_R[i*L] = (float) data_read[i+1];
         }
 
 
-
-        // through_LPF(fx_m, L, h, P, y_m);
+        through_LPF(data_zp_L, (data_L+zp_N) , h, P, output_L);
 
 
         // overlap and add
