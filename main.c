@@ -25,15 +25,12 @@ int main(int argc, char **argv){
         h[n] = low_pass(MOrder, n);
     }
 
-    for(i=0;i<=2*MOrder;i++) {
-        fprintf(stdout, "%.15f\n", h[i]);
-    }
 
     // zero padding for h
-    for(i=0;i<P-1;i++) {
+    for(i=0;i<P;i++) {
         h_zp[i] = h[i];
     }
-    for(i=P-1;i<(data_L+zp_N);i++) {
+    for(i=P;i<(data_L+zp_N);i++) {
         h_zp[i] = 0.0f;
     }
 
@@ -70,7 +67,7 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
         //     fwrite(s_y_m+i, sizeof(short), 1, fp_out);
         // }
         
-        // m++;
+        m++;
     }
 
 

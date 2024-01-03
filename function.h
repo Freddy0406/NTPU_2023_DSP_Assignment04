@@ -10,7 +10,7 @@
 #define FL 22050.0f             // cutoff frequency = 22050 Hz
 #define FS 44100.0f             // sampling frequency
 #define MOrder 128              // LPF Order
-#define P 2*MOrder+1
+#define P (2*MOrder+1)
 #define zp_N 79*(data_L/2)
 
 
