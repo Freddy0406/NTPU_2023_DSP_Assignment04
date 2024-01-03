@@ -4,7 +4,7 @@
 
 int main(int argc, char **argv){
 
-    FILE *fp = fopen("input.wav", "rb");
+    FILE *fp = fopen("test.wav", "rb");
     FILE *fp_out = fopen("output.raw", "wb");
     fseek(fp, 44, SEEK_SET);                                                        //跳過wav標頭
     short *data_read = (short*)malloc(sizeof(short)*(data_L));                      //讀取wav雙聲道        
