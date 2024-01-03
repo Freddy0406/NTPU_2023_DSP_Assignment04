@@ -19,3 +19,19 @@ float low_pass(int m, int n)
 	}
 }
 
+
+
+// void through_LPF(float *x, int lx, float *h, int lh, float *y)
+// {
+//     //int N = lx + lh - 1;
+//     int i;
+//     int k;
+//     for(i=0;i<N;i++) {
+//         /* flip x */
+//         y[i] = 0.0f;
+//         for(k=0;k<lh && (k<=i);k++) {
+//             y[i] = y[i] + x[i-k] * h[k]; // flip x
+//             //  x[i-k] would has some access violation for (i-k)>=lx
+//         }
+//     }
+// }
