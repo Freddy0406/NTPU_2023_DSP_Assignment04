@@ -65,6 +65,11 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
             fwrite(lpf_L+i, sizeof(short), 1, fp_out);
             fwrite(lpf_R+i, sizeof(short), 1, fp_out);
         }
+
+        // for(i=0;i<(zp_N);i+=L) {
+        //     fwrite(lpf_L+i, sizeof(short), 1, fp_out);
+        //     fwrite(lpf_R+i, sizeof(short), 1, fp_out);
+        // }
         //m++;
         times++;
     }

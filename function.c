@@ -29,14 +29,14 @@ void through_LPF(float *data, int N, float *h, short *output){
     for(n=0;n<(N);n++) {
 		y = 0.0;
 		for(k=0;k<P;k++) {
-			if( (n-k)>=0 && (n-k<N) )
+			if( (n-k)>=0)
 		 		y = y + h[k] * data[n-k];
 		}
 		output[n] = (short)(roundf(L*y));			
 	}
 
 	// for(n=0;n<N;n++){
-	// 	output[n] = (short)(roundf(L*data[n]));
+	// 	output[n] = (short)(roundf(data[n]));
 	// }
 }
 
