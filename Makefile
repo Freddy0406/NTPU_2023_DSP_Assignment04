@@ -7,6 +7,6 @@ test:
 	./main.exe
 
 clean:
-	rm -f fftfilter.exe output.raw
+	rm -f main.exe output.raw
 
 .PHONY: test clean

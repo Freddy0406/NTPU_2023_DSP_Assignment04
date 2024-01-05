@@ -1,7 +1,5 @@
 # include "function.h"
 
-
-
 int main(int argc, char **argv){
 
     FILE *fp = fopen("test.wav", "rb");
@@ -14,18 +12,14 @@ int main(int argc, char **argv){
     short *data_read = (short*)malloc(sizeof(short)*(data_L));               //讀取wav雙聲道        
     float *data_zp_L = (float*)calloc((zp_N),sizeof(float));                 //zero padding 左聲道
     float *data_zp_R = (float*)calloc((zp_N),sizeof(float));                 //zero padding 右聲道
-    short *lpf_L = (short*)calloc((zp_N+P-1),sizeof(short));                 //zero padding 左聲道
-    short *lpf_R = (short*)calloc((zp_N+P-1),sizeof(short));                 //zero padding 左聲道
-
-
-
+    short *lpf_L = (short*)calloc((zp_N+P-1),sizeof(short));                 //zero padding through lpf 左聲道
+    short *lpf_R = (short*)calloc((zp_N+P-1),sizeof(short));                 //zero padding through lpf 右聲道
     int n,i;
     int m = 0;  
-
-
-
     FILE *fptxt  = fopen("h.txt","w+");
     float *h = (float*)malloc(sizeof(float)*P);                         //128-Order LPF
+
+    
     for(n=0;n<P;n++) {
         h[n] = low_pass(MOrder, n);
         fprintf(fptxt,"%lf\n",h[n]);                                           //write into txt
@@ -72,21 +66,11 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
         times++;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     free(data_read);
     free(data_zp_L);
     free(data_zp_R);
+    free(lpf_L);
+    free(lpf_R);
     free(h);
     fclose(fp);
     fclose(fp_out);
