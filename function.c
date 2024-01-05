@@ -37,4 +37,3 @@ void through_LPF(float *data, int N, float *h, short *output){
 	}
 }
 
-
