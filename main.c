@@ -42,7 +42,7 @@ int main(int argc, char **argv){
 
 while( fread(data_read, sizeof(short), data_L, fp) ) {
         // convert data type
-        for(i=0;i<(data_L-1);i+=2) {
+        for(i=0;i<(data_L);i+=2) {
             data_zp_L[(i*L)/2] = (float) data_read[i];
             data_zp_R[(i*L)/2] = (float) data_read[i+1];
         }
@@ -52,13 +52,13 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
         through_LPF(data_zp_L, zp_N , h,  lpf_L);
         through_LPF(data_zp_R, zp_N , h,  lpf_R);
 
-        if(times==0){
-            for(i = 0;i<(zp_N);i++){
-                if(lpf_L[i]!=0){
-                    printf("%d\n",i);
-                }
-            }
-        }
+        // if(times==0){
+        //     for(i = 0;i<(zp_N);i++){
+        //         if(lpf_L[i]!=0){
+        //             printf("%d\n",i);
+        //         }
+        //     }
+        // }
 
         
         for(i=0;i<(zp_N);i+=M) {
