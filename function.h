@@ -8,10 +8,10 @@
 
 #define PI 3.141592653589793f
 #define data_L 441*2                // 20ms frame size 44100*0.01 = 441 (Stereo = 441 X 2 = 882)
-#define FL 50.0f                 // cutoff frequency = 22050 Hz
+#define FL 50.0f                 	// cutoff frequency = 22050 Hz
 #define FS 44100.0f                 // sampling frequency
 #define FS_out 8000
-#define MOrder 1024                  // LPF Order
+#define MOrder 512                 // LPF Order
 #define M 441                                              
 #define L 80
 #define P (2*MOrder+1)
