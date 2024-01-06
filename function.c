@@ -29,14 +29,31 @@ void through_LPF(float *data, int N, float *h, short *output){
     for(n=0;n<(zp_N+P-1);n++) {
 		y = 0.0;
 		for(k=0;k<P;k++) {
-			if( (n-k)>=0)
+			if( (n-k)>=0 && (n-k)<N)
 		 		y = y + h[k] * data[n-k];
 		}
-		output[n] = (short)(roundf(L*y));			
+		output[n] = (short)(roundf(y));			
 	}
+}
 
-	// for(n=0;n<N;n++){
-	// 	output[n] = (short)(roundf(data[n]));
-	// }
+void overlap_add(short *in, short *out, short *pre){
+	int i ;
+    for(i = 0;i<(P-1);i++){				//Add previous array
+        in[i] = in[i]+pre[i];
+    }
+
+	int index = 0;
+    for(i=zp_N;i<(zp_N+P-1);i++){		//Copy last P-1 data to previous array
+        pre[index] = in[i];
+        index++;
+    }
+
+	int index2 = 0;						//down-sampling output
+	for (i = 0;i<zp_N;i++){
+		if((i%M)==0){
+			out[index2] = in[i];
+			index2++;
+		}
+	}
 }
 

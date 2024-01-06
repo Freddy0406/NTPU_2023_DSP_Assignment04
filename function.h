@@ -8,7 +8,7 @@
 
 #define PI 3.141592653589793f
 #define data_L 441*2                // 20ms frame size 44100*0.01 = 441 (Stereo = 441 X 2 = 882)
-#define FL 4000.0f                 // cutoff frequency = 22050 Hz
+#define FL 50.0f                 // cutoff frequency = 22050 Hz
 #define FS 44100.0f                 // sampling frequency
 #define FS_out 8000
 #define MOrder 1024                  // LPF Order
@@ -41,6 +41,7 @@ struct WaveHeader
 float hamming(int N, int n);
 float low_pass(int m, int n);
 void through_LPF(float *data, int data_length, float *h, short *output);
+void overlap_add(short *in, short *out, short *pre);
 
 
 
