@@ -12,8 +12,8 @@ int main(int argc, char **argv){
     short *data_read = (short*)malloc(sizeof(short)*(data_L));               //讀取wav雙聲道        
     float *data_zp_L = (float*)calloc((zp_N),sizeof(float));                 //zero padding 左聲道
     float *data_zp_R = (float*)calloc((zp_N),sizeof(float));                 //zero padding 右聲道
-    short *lpf_L = (short*)calloc((zp_N),sizeof(short));                 //zero padding through lpf 左聲道
-    short *lpf_R = (short*)calloc((zp_N),sizeof(short));                 //zero padding through lpf 右聲道
+    short *lpf_L = (short*)calloc((zp_N+P-1),sizeof(short));                 //zero padding through lpf 左聲道
+    short *lpf_R = (short*)calloc((zp_N+P-1),sizeof(short));                 //zero padding through lpf 右聲道
     int n,i;
     int m = 0;  
     FILE *fptxt  = fopen("h.txt","w+");
@@ -38,6 +38,12 @@ int main(int argc, char **argv){
 	Wavout_head.total_Len = 36+Wavout_head.DATALen;
     printf("out %d\n",Wavout_head.samplehz);
     fwrite(&Wavout_head,sizeof(Wavout_head),1,fp_out);
+    short *yl;
+    short *yr;
+    short *out_L = (short*)calloc((zp_N+P-1),sizeof(short));                 //zero padding through lpf 左聲道
+    short *out_R = (short*)calloc((zp_N+P-1),sizeof(short));                 //zero padding through lpf 右聲道
+
+
 
 
 while( fread(data_read, sizeof(short), data_L, fp) ) {
@@ -60,17 +66,30 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
         //     }
         // }
 
+        // overlap and add
+        // for(i=0;i<(zp_N+P-1);i++) {
+        //     yl[m*(data_L/2)+i] = yl[m*(data_L/2)+i] + lpf_L[i];
+        //     yr[m*(data_L/2)+i] = yr[m*(data_L/2)+i] + lpf_R[i];             
+        // }
+
+        // for(i=0;i<(zp_N);i++) {
+        //     out_L[i] = yl[m*(data_L/2)+i];
+        //     out_R[i] = yr[m*(data_L/2)+i];             
+        // }
+
         
-        for(i=0;i<(zp_N);i+=M) {
-            fwrite(lpf_L+i, sizeof(short), 1, fp_out);
-            fwrite(lpf_R+i, sizeof(short), 1, fp_out);
-        }
+        // for(i=0;i<(zp_N);i+=M) {
+        //     fwrite(out_L+i, sizeof(short), 1, fp_out);
+        //     fwrite(out_R+i, sizeof(short), 1, fp_out);
+        // }
+
+
 
         // for(i=0;i<(zp_N);i+=L) {
         //     fwrite(lpf_L+i, sizeof(short), 1, fp_out);
         //     fwrite(lpf_R+i, sizeof(short), 1, fp_out);
         // }
-        //m++;
+        m++;
         times++;
     }
 
@@ -80,6 +99,10 @@ while( fread(data_read, sizeof(short), data_L, fp) ) {
     free(lpf_L);
     free(lpf_R);
     free(h);
+    free(yl);
+    free(yr);
+    free(out_L);
+    free(out_R);
     fclose(fp);
     fclose(fp_out);
 

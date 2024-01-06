@@ -26,7 +26,7 @@ void through_LPF(float *data, int N, float *h, short *output){
     int n = 0;
     int k = 0;
     float y = 0.0;
-    for(n=0;n<(N);n++) {
+    for(n=0;n<(zp_N+P-1);n++) {
 		y = 0.0;
 		for(k=0;k<P;k++) {
 			if( (n-k)>=0)
