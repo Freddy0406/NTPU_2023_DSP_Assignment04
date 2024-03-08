@@ -1,12 +1,16 @@
 INCLUDE = -I.
 
+CFLAGS = -O3 -Wall -Wextra -Werror
+TARGETS = $(wildcard *.c)
+EXE = main.exe
+
 all:
-	gcc -O3 -o main.exe main.c function.c -lm
+	gcc $(CFLAGS) -o $(EXE) $(TARGETS) -lm
 
 test:
-	./main.exe
+	./$(EXE)
 
 clean:
 	rm -f main.exe output.raw
 
-.PHONY: test clean
+.PHONY: all test clean
